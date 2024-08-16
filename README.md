@@ -34,8 +34,8 @@
  - Python 3
  - Flask
 
- ### Setup
-     Detailed instructions on how to clone the repository, create a virtual environment, and install dependencies.
+ ### Setup:
+   Detailed instructions on how to clone the repository, create a virtual environment, and install dependencies.
 
 ### 1. **Clone the repository**:
     git clone https://github.com/chinmayphadkule/pizza-price-prediction.git
