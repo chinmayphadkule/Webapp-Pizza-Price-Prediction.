@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculate Average Pizza Price</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #D6EFD8;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .calculate {
+            background-color: rgba(0, 123, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #508D4E;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+        }
+        .profile-dropdown {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            width: 200px;
+            margin-top: 5px;
+            z-index: 1000;
+            display: none;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .profile-dropdown .dropdown-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .predicted-price {
+            font-size: 24px; /* Increased font size */
+            font-weight: bold;
+            color: #ffffff; /* Eye-catching color */
+            /* background-color: #007BFF;  */
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        
+    </style>
+</head>
+<body>
+    <!-- Profile Icon and Dropdown -->
+    <div class="position-absolute" style="top: 10px; right: 10px;">
+        <div class="profile-icon d-flex justify-content-center align-items-center" id="profile-icon">
+            {{name.split()[0][0].capitalize()}} <!-- Replace 'A' with the first initial of the user's name -->
+        </div>
+        <div class="profile-dropdown" id="profile-dropdown">
+            <div class="dropdown-item"><strong>{{ name }}</strong></div>
+            <!-- <div class="dropdown-item text-muted">{{ current_user.email }}</div> -->
+            <div class="dropdown-divider"></div>
+            <form id="logout-form" action="{{ url_for('logout') }}" method="post">
+                <button type="submit" class="dropdown-item text-danger">Logout</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Form -->
+    <div class="calculate container">
+        <h1 class="text-center text-dark mb-4">Pizza Price Prediction</h1>
+        <form action="{{ url_for('dashboard') }}" method="post">
+            <div class="form-group">
+                <input type="text" class="form-control" name="quantity" placeholder="Quantity" value="{{request.form['quantity']}}" required >
+            </div>
+            <div class="form-group">
+                <select class="form-control" name="category" value="{{request.form['category']}}" required>
+                    <option value="" disabled selected>Select category</option>
+                    <option value="Classic">Classic</option>
+                    <option value="Veggie">Veggie</option>
+                    <option value="Supreme">Supreme</option>
+            
+                </select>
+            </div>
+            <div class="form-group">
+                <select class="form-control" name="ingredients" value="{{request.form['ingredients']}}" required>
+                    <option value="" disabled selected>Select Ingredients</option>
+                    <option value="Sliced Ham, Pineapple, Mozzarella Cheese">Sliced Ham, Pineapple, Mozzarella Cheese</option>
+                    <option value="Pepperoni, Mushrooms, Red Onions, Red Peppers, Bacon">Pepperoni, Mushrooms, Red Onions, Red Peppers, Bacon</option>
+                    <option value="Mozzarella Cheese, Provolone Cheese, Smoked Gouda Cheese, Romano Cheese, Blue Cheese, Garlic">Mozzarella Cheese, Provolone Cheese, Smoked Gouda Cheese, Romano Cheese, Blue Cheese, Garlic</option>
+                    <option value="Calabrese Salami, Capocollo, Tomatoes, Red Onions, Green Olives, Garlic">Calabrese Salami, Capocollo, Tomatoes, Red Onions, Green Olives, Garlic</option>
+                    <option value="Tomatoes, Red Peppers, Jalapeno Peppers, Red Onions, Cilantro, Corn, Chipotle Sauce, Garlic">Tomatoes, Red Peppers, Jalapeno Peppers, Red Onions, Cilantro, Corn, Chipotle Sauce, Garlic</option>
+                    <option value="Prosciutto di San Daniele, Arugula, Mozzarella Cheese">Prosciutto di San Daniele, Arugula, Mozzarella Cheese</option>
+                    <option value="Kalamata Olives, Feta Cheese, Tomatoes, Garlic, Beef Chuck Roast, Red Onions">Kalamata Olives, Feta Cheese, Tomatoes, Garlic, Beef Chuck Roast, Red Onions</option>
+                    <option value="Spinach, Red Onions, Pepperoni, Tomatoes, Artichokes, Kalamata Olives, Garlic, Asiago Cheese">Spinach, Red Onions, Pepperoni, Tomatoes, Artichokes, Kalamata Olives, Garlic, Asiago Cheese</option>
+                    <option value="Spinach, Mushrooms, Tomatoes, Green Olives, Feta Cheese">Spinach, Mushrooms, Tomatoes, Green Olives, Feta Cheese</option>
+                    <option value="Capocollo, Red Peppers, Tomatoes, Goat Cheese, Garlic, Oregano">Capocollo, Red Peppers, Tomatoes, Goat Cheese, Garlic, Oregano</option>
+                    <option value="Capocollo, Tomatoes, Goat Cheese, Artichokes, Peperoncini verdi, Garlic">Capocollo, Tomatoes, Goat Cheese, Artichokes, Peperoncini verdi, Garlic</option>
+                    <option value="Spinach, Artichokes, Tomatoes, Sun-dried Tomatoes, Garlic, Pesto Sauce">Spinach, Artichokes, Tomatoes, Sun-dried Tomatoes, Garlic, Pesto Sauce</option>
+                    <option value="Mushrooms, Tomatoes, Red Peppers, Green Peppers, Red Onions, Zucchini, Spinach, Garlic">Mushrooms, Tomatoes, Red Peppers, Green Peppers, Red Onions, Zucchini, Spinach, Garlic</option>
+                    <option value="Mozzarella Cheese, Pepperoni">Mozzarella Cheese, Pepperoni</option>
+                    <option value="Bacon, Pepperoni, Italian Sausage, Chorizo Sausage">Bacon, Pepperoni, Italian Sausage, Chorizo Sausage</option>
+                    <option value="Soppressata Salami, Fontina Cheese, Mozzarella Cheese, Mushrooms, Garlic">Soppressata Salami, Fontina Cheese, Mozzarella Cheese, Mushrooms, Garlic</option>
+                    <option value="Ricotta Cheese, Gorgonzola Piccante Cheese, Mozzarella Cheese, Parmigiano Reggiano Cheese, Garlic">Ricotta Cheese, Gorgonzola Piccante Cheese, Mozzarella Cheese, Parmigiano Reggiano Cheese, Garlic</option>
+                    <option value="Tomatoes, Anchovies, Green Olives, Red Onions, Garlic">Tomatoes, Anchovies, Green Olives, Red Onions, Garlic</option>
+                    <option value="Nduja Salami, Pancetta, Tomatoes, Red Onions, Friggitello Peppers, Garlic">Nduja Salami, Pancetta, Tomatoes, Red Onions, Friggitello Peppers, Garlic</option>
+                    <option value="Spinach, Artichokes, Kalamata Olives, Sun-dried Tomatoes, Feta Cheese, Plum Tomatoes, Red Onions">Spinach, Artichokes, Kalamata Olives, Sun-dried Tomatoes, Feta Cheese, Plum Tomatoes, Red Onions</option>
+                    <option value="Genoa Salami, Capocollo, Pepperoni, Tomatoes, Asiago Cheese, Garlic">Genoa Salami, Capocollo, Pepperoni, Tomatoes, Asiago Cheese, Garlic</option>
+                    <option value="Spinach, Mushrooms, Red Onions, Feta Cheese, Garlic">Spinach, Mushrooms, Red Onions, Feta Cheese, Garlic</option>
+                    <option value="Coarse Sicilian Salami, Tomatoes, Green Olives, Luganega Sausage, Onions, Garlic">Coarse Sicilian Salami, Tomatoes, Green Olives, Luganega Sausage, Onions, Garlic</option>
+                    <option value="Pepperoni, Mushrooms, Green Peppers">Pepperoni, Mushrooms, Green Peppers</option>
+                    <option value="Brie Carre Cheese, Prosciutto, Caramelized Onions, Pears, Thyme, Garlic">Brie Carre Cheese, Prosciutto, Caramelized Onions, Pears, Thyme, Garlic</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <select class="form-control" name="size" value="{{request.form['size']}}" required>
+                    <option value="" >Select Size</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                    <option value="XXL">XXL</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <select class="form-control" name="weekday" value="{{request.form['weekday']}}" required>
+                    <option value="" disabled selected>Select Weekday</option>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-success btn-block">Predict Price</button>
+            <br>
+            <div class="text-center">
+                {% if a %}
+                    <p class="predicted-price">Predicted Price: {{ "$"'%.2f' % a }}</p>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Toggle profile dropdown
+        $('#profile-icon').click(function() {
+            $('#profile-dropdown').toggle();
+        });
+
+        // Hide the dropdown if the user clicks outside of it
+        $(document).click(function(event) {
+            if (!$(event.target).closest('#profile-icon, #profile-dropdown').length) {
+                $('#profile-dropdown').hide();
+            }
+        });
+    </script>
+</body>
+</html>
+

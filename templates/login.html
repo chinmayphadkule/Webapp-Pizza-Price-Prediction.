@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Pizza Price Prediction</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body, html {
+            background-color: #C5FFF8;
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column; /* Align center elements vertically */
+        }
+        .login-container {
+            background-color: rgba(0, 123, 255, 0.9); 
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px; 
+        }
+        .login-container h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: white; 
+        }
+        .login-container form {
+            display: flex;
+            flex-direction: column;
+        }
+        .login-container input[type="email"],
+        .login-container input[type="password"] {
+            padding: 15px; 
+            margin: 10px 0;
+            border-radius: 5px;
+            font-size: 16px; 
+        }
+        .login-container input[type="submit"] {
+            padding: 15px; 
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            font-size: 18px; 
+        }
+        .login-container input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        .login-container .form-check {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+        .login-container .form-check-label {
+            color: white;
+            margin-left: 10px;
+        }
+        .login-container .register-link {
+            margin-top: 10px;
+            color: white; 
+        }
+        .login-container .register-link a {
+            color: white; 
+            font-weight: bold; 
+        }
+        .application-name {
+            font-size: 32px; 
+            color: white; 
+            margin-bottom: 10px;
+        }
+        .flashes .alert {
+            font-weight: bold;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center; 
+            margin-top: 10px;
+            border: 2px solid;
+        }
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .alert-warning {
+            color: #856404;
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+        }
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        .alert-info {
+            color: #0c5460;
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+        }
+        .page-title {
+            font-size: 36px;
+            color: #000000;
+            margin-bottom: 60px;
+            text-align: center;
+            font-weight: bolder;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-title">Welcome to the Pizza Price Predictor</div>
+
+    <div class="login-container">
+        <h1>Login</h1>
+
+        <form action="{{ url_for('login') }}" method="post">
+            <input type="email" name="email" placeholder="Email" class="form-control" required>
+            <input type="password" name="password" placeholder="Password" class="form-control" required>
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                <label class="form-check-label" for="remember">Remember me</label>
+            </div>
+            <input type="submit" value="Login" class="btn btn-success btn-block">
+
+            <!-- Flash messages block -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flashes">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}    
+        </form>
+
+        <div class="register-link">
+            <p>Not registered? <a href="{{ url_for('register') }}">Register here</a></p>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

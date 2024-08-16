@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculate Average Pizza Price</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #D6EFD8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .calculate {
+            background-color: #36C2CE;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .calculate h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .calculate form {
+            display: flex;
+            flex-direction: column;
+        }
+        .calculate input[type="text"], .calculate select {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .calculate button {
+            padding: 10px;
+            background-color: #508D4E;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .calculate button:hover {
+            background-color: #0056b3;
+        }
+        .calculate br {
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            size: a4;
+            font-size: X-large;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculate">
+        <h1>Pizza Price Prediction</h1>
+        
+        <!-- Main Input For Receiving Query to our ML -->
+        <form action="{{ url_for('dashboard')}}" method="post">
+            <input type="text" name="order_id" placeholder="Order ID" required="required" />
+            <input type="text" name="pizza_id" placeholder="Pizza ID" required="required" />
+            <input type="text" name="quantity" placeholder="Quantity" required="required" />
+            <input type="text" name="pizza_type_id" placeholder="Pizza Type ID" required="required" />
+            <input type="text" name="name" placeholder="Name" required="required" />
+            <input type="text" name="category" placeholder="Category" required="required" />
+            <input type="text" name="ingredients" placeholder="Ingredients" required="required" />
+            <select name="size" required="required">
+                <option value="" disabled selected>Select Size</option>
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L">L</option>
+                <option value="XL">XL</option>
+                <option value="XXL">XXL</option>
+            </select>
+            <input type="text" name="weekday" placeholder="Weekday" required="required" />
+            <button type="submit" class="btn btn-primary btn-block btn-large">Predict Price</button>
+        </form>
+
+        <br>
+        <br>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
